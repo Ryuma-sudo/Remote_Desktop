@@ -15,7 +15,7 @@ public class SendScreen extends Thread {
     OutputStream oos = null;
 
     public SendScreen(Socket sSocket, Robot robot, Rectangle rect) {
-        this.socket = socket;
+        this.socket = sSocket;
         this.robot = robot;
         this.rect = rect;
         start();
