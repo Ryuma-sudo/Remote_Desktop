@@ -23,6 +23,7 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         this.cPanel.addKeyListener(this);
         this.cPanel.addMouseListener(this);
         this.cPanel.addMouseMotionListener(this);
+        this.cPanel.addMouseWheelListener(this);
 
         w = Double.valueOf(width.trim()).doubleValue();
         h = Double.valueOf(height.trim()).doubleValue();
