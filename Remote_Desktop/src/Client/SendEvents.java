@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class SendEvents implements KeyListener, MouseListener, MouseMotionListener {
+public class SendEvents implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private Socket cSocket = null;
     private JPanel cPanel = null;
     private PrintWriter writer = null;
@@ -93,6 +93,12 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void keyReleased(KeyEvent e) {
         writer.println(Commands.RELEASE_KEY.getAbbrev());
         writer.println(e.getKeyCode());
+        writer.flush();
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        writer.println(Commands.SCROLL_MOUSE.getAbbrev());
+        writer.println(e.getWheelRotation());
         writer.flush();
     }
 }

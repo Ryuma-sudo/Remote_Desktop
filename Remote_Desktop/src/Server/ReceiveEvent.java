@@ -40,6 +40,8 @@ public class ReceiveEvent extends Thread {
                     case -5:
                         robot.mouseMove(scanner.nextInt(), scanner.nextInt());
                         break;
+                    case -6:
+                        robot.mouseWheel(scanner.nextInt());
                 }
             }
         }catch (IOException e) {

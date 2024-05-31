@@ -11,7 +11,6 @@ import java.io.ObjectInputStream;
 public class ReceivingScreen extends Thread {
     private ObjectInputStream cObjectInputStream = null;
     private JPanel cPanel = null;
-    private boolean continueLoop = true;
     InputStream oin = null;
     Image image1 = null;
 
