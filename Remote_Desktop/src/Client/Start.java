@@ -2,6 +2,7 @@ package Client;
 
 import javax.swing.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Start {
     static String port = "2005";
@@ -17,6 +18,16 @@ public class Start {
 
         } catch (Exception e){
             e.printStackTrace();
+        }
+
+        System.out.printf("Type %Cquit%C to exit\n", 34, 34);
+        Scanner scanner = new Scanner(System.in);
+
+        while(true) {
+            String input = scanner.nextLine();
+            if (input.equals("quit")) {
+                System.exit(0);
+            }
         }
     }
 
