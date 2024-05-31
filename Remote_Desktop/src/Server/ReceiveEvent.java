@@ -42,6 +42,7 @@ public class ReceiveEvent extends Thread {
                         break;
                     case -6:
                         robot.mouseWheel(scanner.nextInt());
+                        break;
                 }
             }
         }catch (IOException e) {
