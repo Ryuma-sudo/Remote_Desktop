@@ -37,7 +37,7 @@ public class SendScreen extends Thread {
                 e.printStackTrace();
             }
             try{
-                Thread.sleep(15);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
