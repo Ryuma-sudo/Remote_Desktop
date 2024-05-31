@@ -63,8 +63,4 @@ public class Authentication extends JFrame implements ActionListener {
             dispose();
         }
     }
-
-    public static void main(String[] args) {
-        new Authentication(null);
-    }
 }

@@ -26,7 +26,7 @@ public class InitConnection {
             rect = new Rectangle(dim);
             robot = new Robot(gDev);
 
-            drawGUI();
+//            drawGUI();
 
             while (true) {
                 Socket sc = sSocket.accept();
@@ -51,6 +51,6 @@ public class InitConnection {
             e.printStackTrace();
         }
     }
-
-    private void drawGUI(){}
+//
+//    private void drawGUI(){}
 }

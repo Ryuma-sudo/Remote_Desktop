@@ -11,7 +11,6 @@ public class SendScreen extends Thread {
     Socket socket = null;
     Robot robot = null;
     Rectangle rect = null;
-    boolean continueLoop = true;
     OutputStream oos = null;
 
     public SendScreen(Socket sSocket, Robot robot, Rectangle rect) {
@@ -29,7 +28,7 @@ public class SendScreen extends Thread {
             e.printStackTrace();
         }
 
-        while(continueLoop) {
+        while(true) {
             BufferedImage img = robot.createScreenCapture(rect);
             try {
                 ImageIO.write(img, "jpeg", oos);
@@ -37,7 +36,7 @@ public class SendScreen extends Thread {
                 e.printStackTrace();
             }
             try{
-                Thread.sleep(10);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
