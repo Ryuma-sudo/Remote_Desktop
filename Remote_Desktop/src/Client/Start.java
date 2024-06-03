@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Start {
-    static String port = "2005";
+    static String port = "2055";
 
     public void initialize(String ip, int port) {
         try{
