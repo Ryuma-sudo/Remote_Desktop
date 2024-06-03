@@ -3,41 +3,52 @@ package Server;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class SendScreen extends Thread {
-    Socket socket = null;
-    Robot robot = null;
-    Rectangle rect = null;
-    OutputStream oos = null;
+    private final Socket socket;
+    private final Robot robot;
+    private final Rectangle rect;
+    private DataOutputStream dos;
 
-    public SendScreen(Socket sSocket, Robot robot, Rectangle rect) {
-        this.socket = sSocket;
+    public SendScreen(Socket socket, Robot robot, Rectangle rect) {
+        this.socket = socket;
         this.robot = robot;
         this.rect = rect;
         start();
     }
 
+    @Override
     public void run() {
         try {
-            oos = socket.getOutputStream();
+            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            while (true) {
+                BufferedImage img = robot.createScreenCapture(rect);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(img, "png", baos);
+                byte[] imageBytes = baos.toByteArray();
 
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+                // Send the length of the image
+                dos.writeInt(imageBytes.length);
+                // Send the image bytes
+                dos.write(imageBytes);
+                dos.flush();  // Ensure the image is sent
 
-        while(true) {
-            BufferedImage img = robot.createScreenCapture(rect);
-            try {
-                ImageIO.write(img, "jpeg", oos);
-            }catch (IOException e) {
-                e.printStackTrace();
+                // Sleep to control frame rate
+                Thread.sleep(100);  // Adjust as needed for desired frame rate
             }
-            try{
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (dos != null) {
+                    dos.close();
+                }
+                if (socket != null && !socket.isClosed()) {
+                    socket.close();
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
