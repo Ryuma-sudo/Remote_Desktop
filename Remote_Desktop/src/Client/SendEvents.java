@@ -25,7 +25,7 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         h = Double.valueOf(height.trim()).doubleValue();
 
         try{
-            writer = new PrintWriter(cSocket.getOutputStream()); // to send the event
+            writer = new PrintWriter(cSocket.getOutputStream(), true); // to send the event
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -52,9 +52,11 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         writer.println(Commands.PRESS_MOUSE.getAbbrev());
         int button = e.getButton();
-        int xButton = 16;
-        if(button == 3) {
-            xButton = 4;
+        int xButton = 16; // default to left button
+        if (button == MouseEvent.BUTTON3) {
+            xButton = 4; // right button
+        } else if (button == MouseEvent.BUTTON2) {
+            xButton = 8; // middle button
         }
         writer.println(xButton);
         writer.flush();
@@ -63,9 +65,11 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void mouseReleased(MouseEvent e) {
         writer.println(Commands.RELEASE_MOUSE.getAbbrev());
         int button = e.getButton();
-        int xButton = 16;
-        if(button == 3) {
-            xButton = 4;
+        int xButton = 16; // default to left button
+        if (button == MouseEvent.BUTTON3) {
+            xButton = 4; // right button
+        } else if (button == MouseEvent.BUTTON2) {
+            xButton = 8; // middle button
         }
         writer.println(xButton);
         writer.flush();

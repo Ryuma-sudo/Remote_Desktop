@@ -46,6 +46,10 @@ public class ReceiveEvent extends Thread {
             }
         }catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
     }
 }
