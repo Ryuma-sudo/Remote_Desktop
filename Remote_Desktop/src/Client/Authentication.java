@@ -11,9 +11,11 @@ import java.net.Socket;
 
 public class Authentication extends JFrame implements ActionListener {
     private Socket cSocket = null;
-    DataOutputStream passchk = null;
-    DataInputStream verification = null;
-    String verify = "";
+    DataOutputStream password = null; // the password get from the server
+    DataInputStream verification = null; // get from the server (is "valid" if the inputPass is correct)
+    String verify = ""; // is verification in String
+
+    // used for making GUI
     JButton submit;
     JPanel panel;
     JLabel label, label1;
@@ -22,6 +24,8 @@ public class Authentication extends JFrame implements ActionListener {
 
     public Authentication(Socket cSocket) {
         this.cSocket = cSocket;
+
+        // making GUI
         label1 = new JLabel("Enter Password");
         text1 = new JTextField(15);
         label = new JLabel("");
@@ -34,33 +38,44 @@ public class Authentication extends JFrame implements ActionListener {
         panel.add(submit);
         add(panel, BorderLayout.CENTER);
         submit.addActionListener(this);
+        setSize(300, 80);
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Client.Authentication");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public void actionPerformed(ActionEvent e) {
-        String value1 = text1.getText();
+        String inputPass = text1.getText(); // get the input password from the client
+
         try{
-            passchk = new DataOutputStream(cSocket.getOutputStream());
+            // reading the server output stream
+            password = new DataOutputStream(cSocket.getOutputStream());
             verification = new DataInputStream(cSocket.getInputStream());
-            passchk.writeUTF(value1);
+            password.writeUTF(inputPass);
             verify = verification.readUTF();
+
         }catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        //checking the given password
         if(verify.equals("valid")) {
             try {
+                // get the resolution of the server screen
                 width = verification.readUTF();
                 height = verification.readUTF();
             }catch (IOException ex) {
                 ex.printStackTrace();
             }
-            CreateFrame myFrame = new CreateFrame(cSocket, width, height);
+
+            // create the remote_desktop frame
+            new CreateFrame(cSocket, width, height);
             dispose();
         }else {
             System.out.println("Please enter valid password");
             JOptionPane.showMessageDialog(this, "password is incorrect", "Error", JOptionPane.ERROR_MESSAGE);
-            dispose();
+            System.exit(0);
         }
     }
 }

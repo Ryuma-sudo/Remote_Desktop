@@ -1,6 +1,7 @@
 package Client;
 
 public enum Commands {
+    // help the server side to recognize the client's event
     PRESS_MOUSE(-1),
     RELEASE_MOUSE(-2),
     PRESS_KEY(-3),

@@ -13,22 +13,23 @@ public class CreateFrame extends Thread{
     private JDesktopPane desktop = new JDesktopPane();
     private Socket cScoket = null;
     private JInternalFrame internalFrame = new JInternalFrame("Server", true, true, true);
-    private JPanel cPanel = new JPanel();
+    private JPanel cPanel = new JPanel();// contain the server's screen
+
     public CreateFrame(Socket cScoket, String width, String height) {
         this.cScoket = cScoket;
         this.width = width;
         this.height = height;
         start();
     }
+
     public void drawGUI() {
+        // making a GUI to work with cPanel
         frame.add(desktop, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         internalFrame.setLayout(new BorderLayout());
         internalFrame.getContentPane().add(cPanel, BorderLayout.CENTER);
-        internalFrame.setSize(100, 100);
         desktop.add(internalFrame);
 
         try{
@@ -47,6 +48,8 @@ public class CreateFrame extends Thread{
         }catch (IOException e) {
             e.printStackTrace();
         }
+
+        // continuously receive the screen and send the mouse, keyboard event to server
         new ReceivingScreen(in, cPanel);
         new SendEvents(cScoket, cPanel, width, height);
     }

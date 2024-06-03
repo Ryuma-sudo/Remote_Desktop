@@ -7,19 +7,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class SendEvents implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
-    private Socket cSocket = null;
     private JPanel cPanel = null;
     private PrintWriter writer = null;
-    String width = "", height = "";
     double w;
     double h;
 
     public SendEvents(Socket cSocket, JPanel cPanel, String width, String height) {
-        this.cSocket = cSocket;
         this.cPanel = cPanel;
-        this.width = width;
-        this.height = height;
 
+        // get the event from cPanel
         this.cPanel.addKeyListener(this);
         this.cPanel.addMouseListener(this);
         this.cPanel.addMouseMotionListener(this);
@@ -29,14 +25,20 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         h = Double.valueOf(height.trim()).doubleValue();
 
         try{
-            writer = new PrintWriter(cSocket.getOutputStream());
+            writer = new PrintWriter(cSocket.getOutputStream()); // to send the event
         }catch(IOException e){
             e.printStackTrace();
         }
     }
-    public void mouseDragged(MouseEvent e) {
 
-    }
+    // mouse's event
+    public void mouseDragged(MouseEvent e) {}
+
+    public void mouseClicked(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
+    public void mouseExited(MouseEvent e) {}
 
     public void mouseMoved(MouseEvent e) {
         double xScale = (double) w/cPanel.getWidth();
@@ -45,10 +47,6 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         writer.println((int) (e.getX() * xScale));
         writer.println((int) (e.getY() * yScale));
         writer.flush();
-    }
-
-    public void mouseClicked(MouseEvent e) {
-
     }
 
     public void mousePressed(MouseEvent e) {
@@ -62,14 +60,6 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         writer.flush();
     }
 
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    public void mouseExited(MouseEvent e) {
-
-    }
-
     public void mouseReleased(MouseEvent e) {
         writer.println(Commands.RELEASE_MOUSE.getAbbrev());
         int button = e.getButton();
@@ -81,9 +71,14 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
         writer.flush();
     }
 
-    public void keyTyped(KeyEvent e) {
-
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        writer.println(Commands.SCROLL_MOUSE.getAbbrev());
+        writer.println(e.getWheelRotation());
+        writer.flush();
     }
+
+    // keyboard's event
+    public void keyTyped(KeyEvent e) {}
 
     public void keyPressed(KeyEvent e) {
         writer.println(Commands.PRESS_KEY.getAbbrev());
@@ -94,12 +89,6 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void keyReleased(KeyEvent e) {
         writer.println(Commands.RELEASE_KEY.getAbbrev());
         writer.println(e.getKeyCode());
-        writer.flush();
-    }
-
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        writer.println(Commands.SCROLL_MOUSE.getAbbrev());
-        writer.println(e.getWheelRotation());
         writer.flush();
     }
 }

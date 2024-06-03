@@ -10,23 +10,28 @@ public class InitConnection {
     ServerSocket sSocket = null;
     DataOutputStream verify = null;
     DataInputStream password = null;
-    String width = "", height = "";
 
     public InitConnection(int port, String value1) {
-        Robot robot = null;
-        Rectangle rect = null;
+        Robot robot = null; // to control the server desktop
+        Rectangle rect = null; // to get the server screen
         try {
             System.out.println("Waiting for initial connection...");
             sSocket = new ServerSocket(port);
+
+            // set up robot
             GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gDev = gEnv.getDefaultScreenDevice();
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            String width = "" + dim.getWidth();
-            String height = "" + dim.getHeight();
-            rect = new Rectangle(dim);
             robot = new Robot(gDev);
 
+            // set up rect
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            rect = new Rectangle(dim);
+
+            String width = "" + dim.getWidth();
+            String height = "" + dim.getHeight();
+
             while (true) {
+                // connect to the client
                 Socket sc = sSocket.accept();
                 password = new DataInputStream(sc.getInputStream());
                 verify = new DataOutputStream(sc.getOutputStream());
@@ -38,6 +43,9 @@ public class InitConnection {
                     verify.writeUTF(width);
                     verify.writeUTF(height);
 
+                    System.out.println("Connection successful");
+
+                    // continuously send screen and receive event to/from client
                     new SendScreen(sc, robot, rect);
                     new ReceiveEvent(sc, robot);
                 }else {

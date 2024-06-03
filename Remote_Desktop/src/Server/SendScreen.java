@@ -10,6 +10,7 @@ public class SendScreen extends Thread {
     private final Socket socket;
     private final Robot robot;
     private final Rectangle rect;
+    private final int framePeriod = 10;
     private DataOutputStream dos;
 
     public SendScreen(Socket socket, Robot robot, Rectangle rect) {
@@ -24,21 +25,24 @@ public class SendScreen extends Thread {
         try {
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             while (true) {
+                // capture server's screen
                 BufferedImage img = robot.createScreenCapture(rect);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ImageIO.write(img, "png", baos);
                 byte[] imageBytes = baos.toByteArray();
 
-                // Send the length of the image
+                // send the length of the image
                 dos.writeInt(imageBytes.length);
-                // Send the image bytes
+                // send the image bytes
                 dos.write(imageBytes);
-                dos.flush();  // Ensure the image is sent
+                dos.flush();  // ensure the image is sent
 
-//                // Sleep to control frame rate
-//                Thread.sleep(1);  // Adjust as needed for desired frame rate
+                // sleep to control frame rate
+                Thread.sleep(framePeriod); // theoretically (1000 / framePeriod) fps (does not count the transfer speed)
             }
-        } catch (IOException e) {
+
+        // error catching
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             try {

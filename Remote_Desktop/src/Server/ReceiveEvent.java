@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class ReceiveEvent extends Thread {
     Socket sSocket = null;
     Robot robot = null;
-    boolean continueLoop = true;
 
     public ReceiveEvent(Socket sSocket, Robot robot) {
         this.sSocket = sSocket;
@@ -21,7 +20,7 @@ public class ReceiveEvent extends Thread {
         try{
             scanner =  new Scanner(sSocket.getInputStream());
 
-            while(continueLoop){
+            while(true){
                 int command = scanner.nextInt();
 
                 switch(command){

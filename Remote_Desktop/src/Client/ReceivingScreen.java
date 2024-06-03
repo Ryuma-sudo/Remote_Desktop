@@ -6,9 +6,9 @@ import java.awt.*;
 import java.io.*;
 
 public class ReceivingScreen extends Thread {
-    private final DataInputStream dis;
+    private final DataInputStream dis; // to get the size of the screenshot image
     private JPanel cPanel = null;
-    Image image1 = null;
+    Image serverScreen = null;
 
     public ReceivingScreen(InputStream in, JPanel cPanel) {
         this.dis = new DataInputStream(new BufferedInputStream(in));
@@ -19,18 +19,20 @@ public class ReceivingScreen extends Thread {
     public void run() {
         try{
             while(true) {
+                // compute the size of the image
                 int length = dis.readInt();
                 byte[] imageBytes = new byte[length];
                 dis.readFully(imageBytes);
 
-                image1 = ImageIO.read(new ByteArrayInputStream(imageBytes));
-                if (image1 != null) {
-                    image1 = image1.getScaledInstance(cPanel.getWidth(), cPanel.getHeight(), Image.SCALE_FAST);
-//                    SwingUtilities.invokeLater(() -> cPanel.repaint());
+                // read the image sent from the server
+                serverScreen = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                if (serverScreen != null) {
+                    serverScreen = serverScreen.getScaledInstance(cPanel.getWidth(), cPanel.getHeight(), Image.SCALE_FAST);
                 }
 
+                // add the image to cPanel
                 Graphics graphics = cPanel.getGraphics();
-                graphics.drawImage(image1, 0, 0, cPanel.getWidth(), cPanel.getHeight(), cPanel);
+                graphics.drawImage(serverScreen, 0, 0, cPanel.getWidth(), cPanel.getHeight(), cPanel);
             }
         }catch (IOException e) {
             e.printStackTrace();
