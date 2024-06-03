@@ -7,7 +7,6 @@ import java.io.*;
 
 public class ReceivingScreen extends Thread {
     private final DataInputStream dis;
-    private ObjectInputStream cObjectInputStream = null;
     private JPanel cPanel = null;
     Image image1 = null;
 
@@ -27,7 +26,7 @@ public class ReceivingScreen extends Thread {
                 image1 = ImageIO.read(new ByteArrayInputStream(imageBytes));
                 if (image1 != null) {
                     image1 = image1.getScaledInstance(cPanel.getWidth(), cPanel.getHeight(), Image.SCALE_FAST);
-                    SwingUtilities.invokeLater(() -> cPanel.repaint());
+//                    SwingUtilities.invokeLater(() -> cPanel.repaint());
                 }
 
                 Graphics graphics = cPanel.getGraphics();

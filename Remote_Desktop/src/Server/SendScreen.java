@@ -35,10 +35,10 @@ public class SendScreen extends Thread {
                 dos.write(imageBytes);
                 dos.flush();  // Ensure the image is sent
 
-                // Sleep to control frame rate
-                Thread.sleep(10);  // Adjust as needed for desired frame rate
+//                // Sleep to control frame rate
+//                Thread.sleep(1);  // Adjust as needed for desired frame rate
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
