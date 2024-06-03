@@ -9,20 +9,20 @@ import java.net.Socket;
 public class SendEvents implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private JPanel cPanel = null;
     private PrintWriter writer = null;
-    double w;
-    double h;
+    double width;
+    double height;
 
     public SendEvents(Socket cSocket, JPanel cPanel, String width, String height) {
         this.cPanel = cPanel;
 
-        // get the event from cPanel
+        // register event listeners
         this.cPanel.addKeyListener(this);
         this.cPanel.addMouseListener(this);
         this.cPanel.addMouseMotionListener(this);
         this.cPanel.addMouseWheelListener(this);
 
-        w = Double.valueOf(width.trim()).doubleValue();
-        h = Double.valueOf(height.trim()).doubleValue();
+        this.width = Double.valueOf(width.trim()).doubleValue();
+        this.height = Double.valueOf(height.trim()).doubleValue();
 
         try{
             writer = new PrintWriter(cSocket.getOutputStream(), true); // to send the event
@@ -41,8 +41,8 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void mouseExited(MouseEvent e) {}
 
     public void mouseMoved(MouseEvent e) {
-        double xScale = (double) w/cPanel.getWidth();
-        double yScale = (double) h/cPanel.getHeight();
+        double xScale = (double) width /cPanel.getWidth();
+        double yScale = (double) height /cPanel.getHeight();
         writer.println(Commands.MOVE_MOUSE.getAbbrev());
         writer.println((int) (e.getX() * xScale));
         writer.println((int) (e.getY() * yScale));
@@ -52,26 +52,26 @@ public class SendEvents implements KeyListener, MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         writer.println(Commands.PRESS_MOUSE.getAbbrev());
         int button = e.getButton();
-        int xButton = 16; // default to left button
+        int robotButton = 16; // default to left button
         if (button == MouseEvent.BUTTON3) {
-            xButton = 4; // right button
+            robotButton = 4; // right button
         } else if (button == MouseEvent.BUTTON2) {
-            xButton = 8; // middle button
+            robotButton = 8; // middle button
         }
-        writer.println(xButton);
+        writer.println(robotButton);
         writer.flush();
     }
 
     public void mouseReleased(MouseEvent e) {
         writer.println(Commands.RELEASE_MOUSE.getAbbrev());
         int button = e.getButton();
-        int xButton = 16; // default to left button
+        int robotButton = 16; // default to left button
         if (button == MouseEvent.BUTTON3) {
-            xButton = 4; // right button
+            robotButton = 4; // right button
         } else if (button == MouseEvent.BUTTON2) {
-            xButton = 8; // middle button
+            robotButton = 8; // middle button
         }
-        writer.println(xButton);
+        writer.println(robotButton);
         writer.flush();
     }
 
