@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SetPassword extends JFrame implements ActionListener {
-    static String port = "2055";
+    static String port = "";
 
     // use to make GUI
     JButton submit;
@@ -15,7 +15,9 @@ public class SetPassword extends JFrame implements ActionListener {
     String password;
     JLabel label ,label1;
 
-    public SetPassword() {
+    public SetPassword(String port) {
+        this.port = port;
+
         // making GUI
         label1 = new JLabel("Set Password");
         textField = new JTextField(15);

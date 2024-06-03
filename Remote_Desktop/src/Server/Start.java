@@ -3,8 +3,10 @@ package Server;
 import java.util.Scanner;
 
 public class Start {
+    static String port = "2055";
+
     public static void main(String[] args) {
-        new SetPassword();
+        new SetPassword(port);
 
         System.out.printf("Type %Cquit%C to exit\n", 34, 34);
         Scanner scanner = new Scanner(System.in);
