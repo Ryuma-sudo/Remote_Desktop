@@ -26,8 +26,9 @@ public class ReceivingScreen extends Thread {
 
                 // read the image sent from the server
                 serverScreen = ImageIO.read(new ByteArrayInputStream(imageBytes));
+
                 if (serverScreen != null) {
-                    serverScreen = serverScreen.getScaledInstance(cPanel.getWidth(), cPanel.getHeight(), Image.SCALE_FAST);
+                    serverScreen = serverScreen.getScaledInstance(cPanel.getWidth(), cPanel.getHeight(), Image.SCALE_SMOOTH);
                 }
 
                 // add the image to cPanel

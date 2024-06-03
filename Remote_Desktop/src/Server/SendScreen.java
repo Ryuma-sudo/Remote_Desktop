@@ -10,7 +10,7 @@ public class SendScreen extends Thread {
     private final Socket socket;
     private final Robot robot;
     private final Rectangle rect;
-    private final int framePeriod = 10;
+    private final int framePeriod = 1;
     private DataOutputStream dos;
 
     public SendScreen(Socket socket, Robot robot, Rectangle rect) {

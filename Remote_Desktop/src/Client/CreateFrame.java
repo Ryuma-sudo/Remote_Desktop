@@ -31,6 +31,7 @@ public class CreateFrame extends Thread{
         internalFrame.setLayout(new BorderLayout());
         internalFrame.getContentPane().add(cPanel, BorderLayout.CENTER);
         desktop.add(internalFrame);
+        frame.setTitle("Remote Desktop by NQTruc");
 
         try{
             internalFrame.setMaximum(true);
