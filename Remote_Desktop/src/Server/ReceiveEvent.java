@@ -1,5 +1,7 @@
 package Server;
 
+import Client.Commands;
+
 import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
@@ -24,22 +26,22 @@ public class ReceiveEvent extends Thread {
                 int command = scanner.nextInt();
 
                 switch(command){
-                    case -1:
+                    case -1://PRESS_MOUSE
                         robot.mousePress(scanner.nextInt());
                         break;
-                    case -2:
+                    case -2://RELEASE_MOUSE
                         robot.mouseRelease(scanner.nextInt());
                         break;
-                    case -3:
+                    case -3://PRESS_KEY
                         robot.keyPress(scanner.nextInt());
                         break;
-                    case -4:
+                    case -4://RELEASE_KEY
                         robot.keyRelease(scanner.nextInt());
                         break;
-                    case -5:
+                    case -5://MOVE_MOUSE
                         robot.mouseMove(scanner.nextInt(), scanner.nextInt());
                         break;
-                    case -6:
+                    case -6://SCROLL_MOUSE
                         robot.mouseWheel(scanner.nextInt());
                         break;
                 }
